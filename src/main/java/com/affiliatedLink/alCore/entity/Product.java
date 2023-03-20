@@ -1,5 +1,6 @@
 package com.affiliatedLink.alCore.entity;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "Product")
@@ -17,6 +20,9 @@ import java.util.UUID;
 @Table(
         name = "product"
 )
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "productId")
 public class Product {
 
     @Id
@@ -53,9 +59,18 @@ public class Product {
     )
     @JoinColumn(
             name = "product_owner",
-            referencedColumnName = "consumer_id"
+            referencedColumnName = "consumer_id",
+            nullable = false
     )
     private Consumer productOwner;
+    @OneToMany(
+            targetEntity = Link.class,
+            cascade = CascadeType.ALL,
+            mappedBy = "product",
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private List<Link> generatedLinks;
 
     public Product(String productName, String productUrl, Timestamp productCreatedOn, Timestamp productUpdatedOn, Consumer productOwner) {
         this.productName = productName;

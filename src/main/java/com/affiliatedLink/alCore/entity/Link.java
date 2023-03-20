@@ -1,5 +1,9 @@
 package com.affiliatedLink.alCore.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,25 +18,34 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "link")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "linkId")
 public class Link {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(
+            name = "link_id",
+            updatable = false
+    )
     private UUID linkId;
     @ManyToOne(
             cascade = CascadeType.ALL
     )
     @JoinColumn(
             name = "linked_product",
-            referencedColumnName = "product_id"
+            referencedColumnName = "product_id",
+            nullable = false
     )
     private Product product;
-    @OneToOne(
+    @ManyToOne(
             cascade = CascadeType.ALL
     )
     @JoinColumn(
             name = "linked_influencer",
-            referencedColumnName = "consumer_id"
+            referencedColumnName = "consumer_id",
+            nullable = false
     )
     private Consumer influencer;
     @Column(
