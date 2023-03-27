@@ -1,9 +1,9 @@
 package com.affiliatedLink.alCore.service;
 
-import com.affiliatedLink.alCore.dto.ProductRequest;
-import com.affiliatedLink.alCore.entity.Consumer;
+import com.affiliatedLink.alCore.entity.User;
+import com.affiliatedLink.alCore.model.ProductRequest;
 import com.affiliatedLink.alCore.entity.Product;
-import com.affiliatedLink.alCore.exception.ConsumerNotFoundException;
+import com.affiliatedLink.alCore.exception.UserNotFoundException;
 import com.affiliatedLink.alCore.exception.ProductNotFoundException;
 import com.affiliatedLink.alCore.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +22,20 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private ConsumerService consumerService;
+    private UserService userService;
 
     public List<Product> getProducts() {
         return productRepository.findAll();
     }
 
-    public Product registerProduct(ProductRequest productRequest) throws ConsumerNotFoundException {
-        Consumer consumer = consumerService.getConsumerById(productRequest.getProductOwner());
+    public Product registerProduct(ProductRequest productRequest) throws UserNotFoundException {
+        User user = userService.getUserById(productRequest.getProductOwner());
         Product product = new Product(
                 productRequest.getProductName(),
                 productRequest.getProductUrl(),
                 Timestamp.valueOf(LocalDateTime.now()),
                 Timestamp.valueOf(LocalDateTime.now()),
-                consumer
+                user
         );
 
         return productRepository.save(product);

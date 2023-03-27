@@ -1,4 +1,4 @@
-package com.affiliatedLink.alCore.dto;
+package com.affiliatedLink.alCore.model;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

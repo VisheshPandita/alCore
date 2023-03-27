@@ -1,8 +1,8 @@
 package com.affiliatedLink.alCore.controller;
 
-import com.affiliatedLink.alCore.dto.LinkRequest;
+import com.affiliatedLink.alCore.model.LinkRequest;
 import com.affiliatedLink.alCore.entity.Link;
-import com.affiliatedLink.alCore.exception.ConsumerNotFoundException;
+import com.affiliatedLink.alCore.exception.UserNotFoundException;
 import com.affiliatedLink.alCore.exception.LinkNotFoundException;
 import com.affiliatedLink.alCore.exception.ProductNotFoundException;
 import com.affiliatedLink.alCore.service.LinkService;
@@ -26,7 +26,7 @@ public class LinkController {
     public ResponseEntity<List<Link>> getLink() { return ResponseEntity.ok(linkService.getLink()); }
 
     @PostMapping
-    public ResponseEntity<Link> registerLink(@RequestBody @Valid LinkRequest linkRequest) throws ConsumerNotFoundException, ProductNotFoundException {
+    public ResponseEntity<Link> registerLink(@RequestBody @Valid LinkRequest linkRequest) throws UserNotFoundException, ProductNotFoundException {
         Link link = linkService.registerLink(linkRequest);
         return new ResponseEntity<>(link, HttpStatus.CREATED);
     }

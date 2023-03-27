@@ -1,10 +1,10 @@
 package com.affiliatedLink.alCore.service;
 
-import com.affiliatedLink.alCore.dto.LinkRequest;
-import com.affiliatedLink.alCore.entity.Consumer;
+import com.affiliatedLink.alCore.model.LinkRequest;
 import com.affiliatedLink.alCore.entity.Link;
 import com.affiliatedLink.alCore.entity.Product;
-import com.affiliatedLink.alCore.exception.ConsumerNotFoundException;
+import com.affiliatedLink.alCore.entity.User;
+import com.affiliatedLink.alCore.exception.UserNotFoundException;
 import com.affiliatedLink.alCore.exception.LinkNotFoundException;
 import com.affiliatedLink.alCore.exception.ProductNotFoundException;
 import com.affiliatedLink.alCore.repository.LinkRepository;
@@ -22,7 +22,7 @@ public class LinkService {
     private LinkRepository linkRepository;
 
     @Autowired
-    private ConsumerService consumerService;
+    private UserService userService;
 
     @Autowired
     private ProductService productService;
@@ -31,8 +31,8 @@ public class LinkService {
         return linkRepository.findAll();
     }
 
-    public Link registerLink(LinkRequest LinkRequest) throws ConsumerNotFoundException, ProductNotFoundException {
-        Consumer influencer = consumerService.getConsumerById(LinkRequest.getInfluencer());
+    public Link registerLink(LinkRequest LinkRequest) throws UserNotFoundException, ProductNotFoundException {
+        User influencer = userService.getUserById(LinkRequest.getInfluencer());
         Product product = productService.getProductById(LinkRequest.getProduct());
 
         Link link = new Link(

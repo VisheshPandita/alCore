@@ -59,10 +59,10 @@ public class Product {
     )
     @JoinColumn(
             name = "product_owner",
-            referencedColumnName = "consumer_id",
+            referencedColumnName = "user_id",
             nullable = false
     )
-    private Consumer productOwner;
+    private User productOwner;
     @OneToMany(
             targetEntity = Link.class,
             cascade = CascadeType.ALL,
@@ -72,7 +72,7 @@ public class Product {
     )
     private List<Link> generatedLinks;
 
-    public Product(String productName, String productUrl, Timestamp productCreatedOn, Timestamp productUpdatedOn, Consumer productOwner) {
+    public Product(String productName, String productUrl, Timestamp productCreatedOn, Timestamp productUpdatedOn, User productOwner) {
         this.productName = productName;
         this.productUrl = productUrl;
         this.productCreatedOn = productCreatedOn;

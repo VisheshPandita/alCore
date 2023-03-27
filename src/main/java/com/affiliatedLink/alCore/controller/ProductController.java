@@ -1,8 +1,8 @@
 package com.affiliatedLink.alCore.controller;
 
-import com.affiliatedLink.alCore.dto.ProductRequest;
+import com.affiliatedLink.alCore.model.ProductRequest;
 import com.affiliatedLink.alCore.entity.Product;
-import com.affiliatedLink.alCore.exception.ConsumerNotFoundException;
+import com.affiliatedLink.alCore.exception.UserNotFoundException;
 import com.affiliatedLink.alCore.exception.ProductNotFoundException;
 import com.affiliatedLink.alCore.service.ProductService;
 import jakarta.validation.Valid;
@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> registerProduct(@RequestBody @Valid ProductRequest productRequest) throws ConsumerNotFoundException {
+    public ResponseEntity<Product> registerProduct(@RequestBody @Valid ProductRequest productRequest) throws UserNotFoundException {
         Product product = productService.registerProduct(productRequest);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }

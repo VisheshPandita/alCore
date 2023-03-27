@@ -44,17 +44,17 @@ public class Link {
     )
     @JoinColumn(
             name = "linked_influencer",
-            referencedColumnName = "consumer_id",
+            referencedColumnName = "user_id",
             nullable = false
     )
-    private Consumer influencer;
+    private User influencer;
     @Column(
             name = "link_click_count",
             nullable = false
     )
     private Long clickCount;
 
-    public Link(Product product, Consumer influencer, Long clickCount) {
+    public Link(Product product, User influencer, Long clickCount) {
         this.product = product;
         this.influencer = influencer;
         this.clickCount = clickCount;

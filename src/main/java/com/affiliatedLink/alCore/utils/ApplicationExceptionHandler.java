@@ -1,6 +1,6 @@
 package com.affiliatedLink.alCore.utils;
 
-import com.affiliatedLink.alCore.exception.ConsumerNotFoundException;
+import com.affiliatedLink.alCore.exception.UserNotFoundException;
 import com.affiliatedLink.alCore.exception.LinkNotFoundException;
 import com.affiliatedLink.alCore.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -26,8 +26,8 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(ConsumerNotFoundException.class)
-    public Map<String, String> handelCreatorNotFound(ConsumerNotFoundException ex){
+    @ExceptionHandler(UserNotFoundException.class)
+    public Map<String, String> handelCreatorNotFound(UserNotFoundException ex){
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("Error message", ex.getMessage());
         return errorMap;
