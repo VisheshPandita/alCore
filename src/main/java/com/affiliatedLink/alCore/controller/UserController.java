@@ -3,10 +3,12 @@ package com.affiliatedLink.alCore.controller;
 import com.affiliatedLink.alCore.entity.User;
 import com.affiliatedLink.alCore.event.RegistrationCompleteEvent;
 import com.affiliatedLink.alCore.exception.UserNotFoundException;
-import com.affiliatedLink.alCore.model.UserModel;
+import com.affiliatedLink.alCore.model.AuthenticationRequest;
+import com.affiliatedLink.alCore.model.AuthenticationResponse;
+import com.affiliatedLink.alCore.model.RegisterRequest;
+import com.affiliatedLink.alCore.service.AuthenticationService;
 import com.affiliatedLink.alCore.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    AuthenticationService authenticationService;
+
+    @Autowired
     private ApplicationEventPublisher publisher;
 
     @GetMapping
@@ -31,16 +36,21 @@ public class UserController {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserModel userModel, final HttpServletRequest request) {
-        User user = userService.registerUser(userModel);
+    @PostMapping("/auth/register")
+    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody RegisterRequest registerRequest, final HttpServletRequest request) {
+        AuthenticationResponse authenticationResponse = authenticationService.register(registerRequest);
         publisher.publishEvent(new RegistrationCompleteEvent(
-                user,
+                authenticationResponse.getUser(),
                 applicationUrl(request)
         ));
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(authenticationResponse, HttpStatus.CREATED);
     }
 
+    @PostMapping("/auth/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authRequest){
+        AuthenticationResponse authenticationResponse = authenticationService.authenticate(authRequest);
+        return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
+    }
     private String applicationUrl(HttpServletRequest request) {
         return "http://" +
                 request.getServerName() +
